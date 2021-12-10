@@ -1,0 +1,30 @@
+{
+    "siteName": "怺加冢穴——官网",
+    "siteURL": "https://yjzx-site.github.io",
+    "year": 2021,
+    "owner": "怺加冢穴计算机社团",
+    "licenseLink": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "licenseName": "CC-BY-SA 4.0",
+    "navs": [ {
+            "name": "主页",
+            "link": "/"
+        }, {
+            "name": "分类",
+            "link": "/categories"
+        }, 
+        {
+            "name": "标签",
+            "link": "/tags"
+        },{
+            "name": "博客",
+            "link": "https://yjzxlclub.github.io/"
+        }, {
+            "name": "关于",
+            "link": "/about"
+        }
+    ],
+    "deploygit": {
+        "repo": "https://github.com/yjzx-site/yjzx-site.github.io.git",
+        "branch": "master"
+    }
+}

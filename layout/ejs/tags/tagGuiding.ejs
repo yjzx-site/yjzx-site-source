@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <%- include('../common/head.ejs', {page: page}); %>
+    <link rel="stylesheet" href="/src/css/works.css">
+    <link rel="stylesheet" href="/src/css/tags.css">
+
+    <title><%= page.title + " - " + config.siteName %></title>
+</head>
+
+<body>
+    <main class="main">
+
+    <%- include('../common/nav.ejs', {config: config}); %>
+
+    <div class="main-container">
+        <h1>标签</h1>
+        
+        <div class="guiding-area">
+            <ul class="tags-tab-links">
+                <% for (let i = 0; i < tagGuiding.items.length; i++) {
+                    let name = tagGuiding.items[i];
+                    let link = "/tags/" + name;
+                %>
+                <li><a href="<%= link %>" class="tags-tab-link"><%= name %></a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+
+    <%- include('../common/footer.ejs', {config: config}); %>
+
+    </main>
+</body>
+</html>

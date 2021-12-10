@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <%- include('../common/head.ejs', {page: page}); %>
+    <title><%= page.title %></title>
+</head>
+
+<body>
+    <main class="main">
+
+    <%- include('../common/nav.ejs', {config: config}); %>
+
+    <div class="main-container">
+        <%- index.content %>
+    </div>
+
+    <%- include('../common/footer.ejs', {config: config}); %>
+    
+    </main>
+</body>
+
+</html>
