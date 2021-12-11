@@ -1,5 +1,5 @@
 {
-    "siteName": "怺加冢穴——官网",
+    "siteName": "怺加冢穴",
     "siteURL": "https://yjzx-site.github.io",
     "year": 2021,
     "owner": "怺加冢穴计算机社团",
@@ -9,7 +9,7 @@
             "name": "主页",
             "link": "/"
         }, {
-            "name": "分类",
+            "name": "文章",
             "link": "/categories"
         }, 
         {
@@ -17,7 +17,7 @@
             "link": "/tags"
         },{
             "name": "博客",
-            "link": "https://yjzxlclub.github.io/"
+            "link": "https://yjzxclub.github.io/"
         }, {
             "name": "关于",
             "link": "/about"
