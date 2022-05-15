@@ -1,0 +1,9 @@
+{
+    "type": "site",
+    "title": "zipExample",
+    "auther": "尼泽·莫泊斯",
+    "category": "杂项",
+    "tags": ["demo"],
+    "description": "一个示例页面，用于展示 zipJS",
+    "date": "2022-05-15"
+}

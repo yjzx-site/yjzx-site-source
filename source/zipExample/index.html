@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="inputFile">
+
+    <!-- 导入解析 zip 所需的库 -->
+    <script src="./zip.js"></script>
+    <!-- 导入我写的解析函数 -->
+    <script src="./fileToObject.js"></script>
+    <script>
+        /** 一个简单的示例，讲解我这个函数的用法 */
+        !(async function(){
+            const inputFile = document.querySelector('#inputFile');
+
+            inputFile.addEventListener('change', async function () {
+                const fileList = inputFile.files;
+                
+                const mapObj = await resolveFileToObject(fileList[0]);
+                // 材质的 objectURL 可以当作普通的 URL 使用，即赋值给 img 的 src 属性
+                const image = document.createElement('IMG');
+                // 设置地板材质
+                image.src = mapObj.floor;
+                
+                const image2 = document.createElement('IMG');
+                // 设置起点材质
+                image2.src = mapObj.start;
+
+                // 加到一个块级元素内部
+                const body = document.querySelector('body');
+                body.appendChild(image);
+                body.appendChild(image2);
+
+                // 地图已经被解析成为了一个字符串，显示成一个段落
+                const p1 = document.createElement('P');
+                p1.textContent = mapObj.maps[0];
+                body.appendChild(p1);
+            })
+        }());
+    </script>
+</body>
+</html>
