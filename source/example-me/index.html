@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+<link rel="shortcut icon" href="/src/img/logo.png">
+  <link rel="stylesheet" href="./bootstrap-5.1.3-dist/css/bootstrap.min.css">
+  <script src="./bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+  <script src="./vue.js"></script>
+  <style>
+    .placed {
+      background-color: aliceblue;
+      margin-left: 4em;
+      margin-right: 4em;
+      margin-bottom: 2em;
+      border: 0.35em #3f3f3f solid;
+      border-radius: 0.8em;
+      height: 80vh;
+    }
+
+    .drag-here {
+      display: flex;
+      align-items: center;
+      border-style: dashed;
+      justify-content: center;
+      text-align: center;
+      color: rgb(27, 27, 27);
+      transition: background-color .2s, color .2s;
+    }
+
+    .drag-here.dragover {
+      background-color: gray;
+      color: whitesmoke;
+    }
+
+    .maps>div {
+      border-radius: 0.2em solid aliceblue;
+      transition: opacity .6s ease-in-out;
+      opacity: 0.15;
+      visibility: hidden;
+      position: absolute;
+      }
+
+    .maps>div.active {      
+      opacity: 1;
+      visibility:visible;
+    }
+
+    .my-contain {
+      border: 0.5em #3f3f3f solid;
+      border-radius: 0.8em;
+      padding: 0.8em;
+      background-color: skyblue;
+    }
+
+    .input-place {
+      margin-left: 4em;
+      margin-right: 4em;
+    }
+
+    .bgofbtn {
+      background-color: aliceblue;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: background-color .42s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+      background-color: rgb(216, 237, 247);
+      opacity: 0.8;
+    }
+
+    .swtich-enter-active,
+    .swtich-leave-active {
+      transition: opacity .42s ease;
+    }
+
+    .swtich-enter-from,
+    .swtich-leave-to {
+      opacity: 0.45;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="vapp" class="mt-2">
+    <transition name="fade">
+      <div v-if="inital" class="container-md my-contain">
+        <div class="input-place">
+          <input class="form-control form-control-lg mb-3" type="file" id="inputFile" v-on:change="resolveZip">
+        </div>
+        <div class="drag-here placed" :class="{dragover: isDragOver}" @drop="dropHandler" @dragover="dragOverHandler" @dragleave="dragLeaveHandler">
+          <p style="font-size: xxx-large; font-weight: bold;">在此拖放文件</p>
+        </div>
+      </div>
+      <div v-else class="container-md my-contain">
+        <div class="btn-toolbar justify-content-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group me-3 " role="group" aria-label="Back">
+            <button class="btn btn-lg btn-secondary" @click="initMe">返回上一步</button>
+          </div>
+          <div class="btn-group" role="group" aria-label="Second group">
+            <button type="button" class="btn btn-lg btn-outline-secondary bgofbtn" @click="swtichPreVious">上一个</button>
+            <button type="button" v-for="map in maps" class="btn btn-lg btn-outline-secondary bgofbtn"
+              :class="{active: map.isActive }" :id="map.id" @click="swtichTab">{{ map.title }}</button>
+            <button type="button" class="btn btn-lg btn-outline-secondary bgofbtn" @click="swtichNext">下一个</button>
+          </div>
+        </div>
+        <div class="maps placed d-flex" style="align-items:center;justify-content:center;">
+
+          <div v-for="map in maps" style="line-height: 0;width: fit-content;"
+            :class="{active: map.isActive}">
+            <template v-for="line in map.lines">
+              <img v-for="sr in line" :src="sr">
+              <br>
+            </template>
+          </div>
+
+        </div>
+      </div>
+    </transition>
+  </div>
+  <!-- 导入解析 zip 所需的库 -->
+  <script src="./zip.js"></script>
+  <!-- 导入我写的解析函数 -->
+  <script src="./fileToObject.js"></script>
+  <script>
+    !(function () {
+      /**@typedef {Object} mapToVue
+       * @type {{
+       *    isActive: Boolean,
+       *    id: String,
+       *    title: String,
+       *    lines: Array<Array<URL.ObjectURL> >
+       * }}
+       */
+
+      Vue.createApp({
+        data() {
+          return {
+            name: 'Vue.js',
+            inital: true,
+            maps: [],
+            activeMap: 0,
+            isDragOver: false
+          }
+        },
+        methods: {
+          async __resolveZip(zipFile) {
+            const mpObj = await resolveFileToObject(zipFile);
+            let resolvedMaps = [];
+
+            for (let i = 0; i < mpObj.maps.length; i++) {
+              const map = mpObj.maps[i];
+              /**@type {mapToVue}*/
+              let nowObj = {
+                isActive: false,
+                id: i,
+                title: `地图 ${i + 1}`,
+                lines: [[]]
+              };
+              for (let j = 0; j < map.length; j++) {
+                const ch = map[j];
+
+                switch (ch) {
+                  case '#':
+                    nowObj.lines[nowObj.lines.length - 1].push(mpObj.wall);
+                    break;
+                  case '.':
+                    nowObj.lines[nowObj.lines.length - 1].push(mpObj.floor)
+                    break;
+                  case 'S':
+                    nowObj.lines[nowObj.lines.length - 1].push(mpObj.start)
+                    break;
+                  case 'E':
+                    nowObj.lines[nowObj.lines.length - 1].push(mpObj.end)
+                    break;
+                  default:
+                    nowObj.lines.push([]);
+                }
+              }
+              resolvedMaps.push(nowObj);
+              resolvedMaps[0].isActive = true;
+              this.maps = resolvedMaps;
+              this.inital = false;
+            }
+          },
+          __swtichTab(id) {
+            const now = this.maps[id];
+            this.maps[this.activeMap].isActive = false;
+            this.maps[id].isActive = true;
+            this.activeMap = id;
+          },
+          
+          async resolveZip(event) {
+            await this.__resolveZip(event.target.files[0]);
+          },
+          swtichTab(event) {
+            this.__swtichTab(event.target.id);
+          },
+          swtichPreVious() {
+            const to = (this.activeMap + this.maps.length - 1) % this.maps.length;
+            this.__swtichTab(to);
+          },
+          swtichNext() {
+            const to = (this.activeMap + this.maps.length + 1) % this.maps.length;
+            this.__swtichTab(to);
+          },
+          initMe() {
+            this.inital = true;
+            this.maps = [];
+            this.activeMap = 0;
+          },
+          async dropHandler(ev) {
+            // Prevent default behavior (Prevent file from being opened)
+            ev.preventDefault();
+            this.isDragOver = false
+            if (ev.dataTransfer.items) {
+              // Use DataTransferItemList interface to access the file(s)
+              for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                // If dropped items aren't files, reject them
+                if (ev.dataTransfer.items[i].kind === 'file') {
+                  var file = ev.dataTransfer.items[i].getAsFile();
+                  await this.__resolveZip(file);
+                  return;
+                }
+              }
+            } else {
+              // Use DataTransfer interface to access the file(s)
+              for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                await this.__resolveZip(ev.dataTransfer.files[i]);
+                return;
+              }
+            }
+          },
+          dragOverHandler(ev) {
+            // Prevent default behavior (Prevent file from being opened)
+            ev.preventDefault();
+            this.isDragOver = true;
+          },
+          dragLeaveHandler(ev) {
+            this.isDragOver = false;
+          }
+        }
+      }).mount('#vapp')
+    }());
+  </script>
+
+</body>
+
+</html>

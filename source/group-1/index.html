@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MapDisplay</title>
+    <link rel="shortcut icon" href="mapdisplay.ico">
+    <link rel="stylesheet" type="text/css" href="mapStyle.css">
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+
+    <style>
+        .navvvv {
+            border-radius: .3em;background-color: rgba(240, 248, 255, 0.753);padding: .2em 0 .2em 0;width: 80%;
+            margin-left: 10%;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div id="I_file" style="display: none;">
+        <input type="file" id="inputFile" accept=".zip" >
+        <i class="fa fa-file-archive-o" style="font-size:24px"></i>
+    </div>
+    <div id="all">
+        <div id=Index>
+        </div>
+        <div id="mapInI" class="carousel slide carousel-fade" data-bs-ride="false" data-bs-interval="false" data-ride="carousel" >
+            <ul class="nav navvvv d-flex justify-content-center align-items-center">
+                <li class="nav-item ">
+                    <div class="btn-group btn-group-lg">
+                    <button type="button" id="inputFileDisplay" class="btn" class="h1" class="buttonme" style="color:  rgb(81, 156, 241);" align="center"font-family:"楷体">
+                        点击上传压缩包
+                    </button>
+                    <button id="return" class=" btn " style="color:  rgb(54, 144, 172);"font-family:"楷体">返回上一个</button>
+                </div>
+                </li>   
+                <li class="nav-item">
+                    
+                </li>
+            </ul>
+            <ul class="carousel-indicators" id="Iindex">
+                <li data-target="#mapInI" data-slide-to="0" class="active"></li>
+            </ul>
+            <div class="carousel-inner" id="mapI">
+                <div class="drag-here" >
+                   拖拽到此处
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#mapInI" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#mapInI" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+                
+            
+    </div>
+    <script src="./zip.js"></script>
+    <script src="./fileToObject.js"></script>
+    <script>
+        !(async function () {
+           
+            const I_inputFile = document.getElementById("inputFile");
+            const B_return = document.getElementById("return");
+            const D_mapInI = document.getElementById("mapInI");
+            const D_mapI = document.getElementById("mapI");
+            const I_index = document.getElementById("Iindex");
+
+            let draging = document.querySelector('.drag-here');
+            draging.addEventListener('dragover', dragOverHander);
+            draging.addEventListener('drop', dropHander);
+
+            let p_index = document.getElementById("p_index");
+            let p_fileName = document.getElementById("p_fileName");
+            let fileList = I_inputFile.files;
+            let mapObj;
+            document.querySelector("#inputFileDisplay").addEventListener('click', function () {
+                I_inputFile.click();
+            })
+
+            function dragOverHander(event) {
+                event.preventDefault();
+            }
+
+            async function dropHander(ev) {
+                ev.preventDefault();
+                if (ev.dataTransfer.items) {
+                    // Use DataTransferItemList interface to access the file(s)
+                    for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+                        // If dropped items aren't files, reject them
+                        if (ev.dataTransfer.items[i].kind === 'file') {
+                            var file = ev.dataTransfer.items[i].getAsFile();
+                            await resFiles(file);
+                            return;
+                        }
+                    }
+                } else {
+                    // Use DataTransfer interface to access the file(s)
+                    for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+                        await resFiles(ev.dataTransfer.files[i]);
+                        return;
+                    }
+                }
+
+            }
+
+            function A_clear() {
+                I_inputFile.disabled = false;
+                
+                D_mapI.replaceChildren();
+                I_index.replaceChildren();
+                draging = document.createElement('DIV');
+                draging.className = 'drag-here';
+                D_mapI.appendChild(draging);
+                draging.addEventListener('dragover', dragOverHander);
+                draging.addEventListener('drop', dropHander);
+                draging.textContent = "拖拽到此处";
+                const placeing = document.createElement('LI');
+                placeing.setAttribute('data-target', '#mapInI');
+                placeing.setAttribute('data-slide-to', 0);
+                placeing.setAttribute('class', "active");
+                I_index.appendChild(placeing);
+            }
+
+            function I_clear() {
+                I_inputFile.disabled = false;
+
+                D_mapI.replaceChildren();
+                I_index.replaceChildren();
+            }
+
+            mapInI.style.lineHeight = "0px";
+
+            async function resFiles(zipFile) {
+                D_mapI.replaceChildren();
+                I_inputFile.disabled = true;
+                mapObj = await resolveFileToObject(zipFile);
+                for (let i = 0; i < mapObj.maps.length; i++) {
+                    let i_map = document.createElement('LI');
+                    i_map.setAttribute('data-target', '#mapInI');
+                    i_map.setAttribute('data-slide-to', i);
+                    if (i === 0) {
+                        i_map.setAttribute('class', "active");
+                    }
+                    I_index.appendChild(i_map);
+                    let ai_map = document.createElement('DIV');
+                    if (i === 0) {
+                        ai_map.setAttribute('class', 'carousel-item map-place active');
+                    }
+                    else ai_map.setAttribute('class', 'carousel-item map-place');
+                    let di_map = document.createElement('DIV');
+                    di_map.setAttribute("class", "carousel-caption d-none d-md-block");
+                    let text = document.createElement('H1');
+                    text.setAttribute('class', 'now');
+                    text.textContent = `这是第 ${i + 1} 个`;
+                    di_map.appendChild(text);
+                    ai_map.appendChild(di_map);
+
+                    const innerImages = document.createElement('DIV');
+                    innerImages.className = 'inner-image-div'
+                    for (let l = 0; l < mapObj.maps[i].length; l++) {
+                        let i_img = document.createElement('IMG');
+                        switch (mapObj.maps[i][l]) {
+                            case '.':
+                                i_img.src = mapObj.floor;
+                                innerImages.appendChild(i_img);
+                                break;
+                            case '#':
+                                i_img.src = mapObj.wall;
+                                innerImages.appendChild(i_img);
+                                break;
+                            case 'S':
+                                i_img.src = mapObj.start;
+                                innerImages.appendChild(i_img);
+                                break;
+                            case 'E':
+                                i_img.src = mapObj.end;
+                                innerImages.appendChild(i_img);
+                                break;
+                            default:
+                                innerImages.appendChild(document.createElement('BR'));
+                                break;
+                        }
+                    }
+                    ai_map.appendChild(innerImages);
+                    D_mapI.appendChild(ai_map);
+                }
+                for (let i = 0; i < mapObj.maps[0].length; i++) {
+                    let i_img = document.createElement('IMG');
+                }
+            }
+
+            I_inputFile.addEventListener("change", async function (ev) {
+                await resFiles(ev.target.files[0]);
+            })
+
+            B_return.addEventListener("click", function () {
+                
+                A_clear();
+            });
+        }());
+    </script>
+</body>

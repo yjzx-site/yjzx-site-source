@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+    <title>mmm</title>
+    <meta name="description" content="map">
+    <meta name="keywords" content="map">
+    <meta name="format-detection" content="none">
+    <link crossorigin="anonymous"
+        integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
+        href="https://lib.baomitu.com/twitter-bootstrap/latest/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    
+</head>
+
+<body>
+    <main>
+        <ul>
+            <li><button title="上一张" id="zuo"><svg t="1653797992271" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3009" width="48" height="48"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128c-211.744443 0-384 172.255557-384 384s172.255557 384 384 384 384-172.255557 384-384S723.744443 128 512 128z" p-id="3010" fill="#cdcdcd"></path><path d="M290.367854 524.352748c0.032684 0.127295 0.192662 0.25631 0.25631 0.383604 1.536138 3.615858 3.648542 7.071738 6.591802 10.047682 0.032684 0.032684 0.063647 0.032684 0.096331 0.063647s0.032684 0.063647 0.063647 0.096331l158.911974 159.359226c12.480043 12.512727 32.704421 12.576374 45.248112 0.063647 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112l-103.327187-103.616181 305.056632 0c17.664722 0 31.99914-14.336138 31.99914-32.00086s-14.336138-32.00086-31.99914-32.00086L396.576374 481.500874l106.112189-104.959656c12.576374-12.447359 12.672705-32.671738 0.25631-45.248112-6.240882-6.335493-14.496116-9.504099-22.751351-9.504099-8.12794 0-16.25588 3.103239-22.496761 9.247789l-160.25545 158.495686C288.00086 498.912727 285.632146 512.703561 290.367854 524.352748z" p-id="3011" fill="#cdcdcd"></path></svg></button></li>
+            <li><button title="重新选择文件" id="reset" onclick="window.location.reload()"><svg t="1653741781094" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10692" width="48" height="48"><path d="M944.5 376.6c3.6-8.7 5.7-18.1 6.1-27.9 0-1.1 0-2.1 0.1-3.2v-1l-1.7-184c-0.4-45.3-37.3-81.8-82.5-81.8h-0.8c-41 0.4-74.7 30.5-80.8 69.8-9.8-7.1-19.9-13.8-30.3-20.1-102.5-62.1-223.1-80.6-339.5-52C298.8 104.8 200.5 177 138.4 279.5S57.8 502.6 86.4 619s100.7 214.7 203.2 276.8c71 43 150.7 65.1 231.7 65.1 35.9 0 72-4.3 107.8-13.1C745.5 919.2 843.8 847 905.9 744.5c23.6-39 11.2-89.8-27.8-113.4-39-23.6-89.8-11.2-113.4 27.8-81 133.7-255.7 176.6-389.5 95.6-64.8-39.2-110.4-101.4-128.5-174.9-18.1-73.6-6.4-149.7 32.9-214.5 80.1-132.1 251.6-175.6 384.7-98.4-36.3 9-63.1 41.9-62.7 80.9 0.4 45.3 37.3 81.8 82.5 81.8h0.8l184-1.7c31.3-0.3 58.5-18 72.2-43.9 1.2-2.2 2.2-4.5 3.2-6.8 0.1-0.1 0.2-0.3 0.2-0.4z" fill="#cdcdcd" p-id="10693"></path></svg></button></li>
+            <li><button title="下一张" id="you"><svg t="1653798016508" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3258" width="48" height="48"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128c-211.744443 0-384 172.255557-384 384s172.255557 384 384 384 384-172.255557 384-384S723.744443 128 512 128z" p-id="3259" fill="#cdcdcd"></path><path d="M732.959548 501.152426c-0.032684-0.127295-0.192662-0.25631-0.25631-0.383604-1.536138-3.615858-3.648542-7.071738-6.591802-10.047682-0.032684-0.032684-0.063647-0.032684-0.096331-0.063647-0.032684-0.032684-0.032684-0.063647-0.063647-0.096331l-158.911974-159.359226c-12.480043-12.480043-32.704421-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l103.328907 103.616181L320 480.00258c-17.664722 0-31.99914 14.336138-31.99914 32.00086s14.336138 32.00086 31.99914 32.00086l306.752748 0-106.112189 104.959656c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.239161 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l160.25545-158.495686C735.328262 526.592447 737.72794 512.767209 732.959548 501.152426z" p-id="3260" fill="#cdcdcd"></path></svg></button></li>
+        </ul>
+    <div id="par"><p id="te" style="font-family: 楷体;">点击左右以切换</p></div>
+        <div id="box" class="inital"  >
+                <p id="P" >
+                    <input type="file" id="inputFile" >
+                    Choose to upload or drag and drop to upload
+                </p>
+        </div>
+        
+    <div>
+
+    </main>
+       
+    </div>
+    <div id="lan"><div>预览<div class="pdiv"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
+    <script src="./zip.js"></script>
+    <script src="./fileToObject.js"></script>
+    <script>
+        $("document").ready(function (){
+            $("button").hide();
+            $("#lan").hide();
+        });
+        $("#te").hide();
+
+        let index=0;
+        let sum = 0;
+        const parentDiv = document.querySelector('.pdiv');
+        let divs = parentDiv.childNodes;
+        let left = document.getElementById('zuo');
+        let right = document.getElementById('you');
+        let box = document.getElementById('box');
+        !(async function () {
+            
+            const inputFile = document.querySelector('#inputFile');
+            inputFile.addEventListener('change', async function () {
+                const fileList = inputFile.files;
+                const mapObj = await resolveFileToObject(fileList[0]);
+                document.querySelector('.pdiv').style.lineHeight = "0px";
+                sum = mapObj.maps.length;
+                $("button").fadeIn(500);
+                $("#te").fadeIn(500);
+                while(divs.length<=sum)
+                {
+                    let divv=document.createElement('div');
+                    divs.push(divv);
+                }
+                for (let j = 0; j < mapObj.maps.length; j++) {
+                    for (let i = 0; i < mapObj.maps[j].length; i++) {
+                        let i_img = document.createElement('IMG');
+                        switch (mapObj.maps[j][i]) {
+                            case '.':
+                                i_img.src = mapObj.floor;
+                                divs[j].appendChild(i_img);
+                                break;
+                            case '#':
+                                i_img.src = mapObj.wall;
+                                divs[j].appendChild(i_img);
+                                break;
+                            case 'S':
+                                i_img.src = mapObj.start;
+                                divs[j].appendChild(i_img);
+                                break;
+                            case 'E':
+                                i_img.src = mapObj.end;
+                                divs[j].appendChild(i_img);
+                                break;
+                            default:
+                                divs[j].appendChild(document.createElement('BR'));
+                                break;
+                        }
+                    }
+                }
+                box.style.lineHeight="0";                
+                let div = divs[index].cloneNode(true);
+                box.replaceChildren();
+                box.appendChild(div);
+            }
+            )
+
+        }());
+
+        left.addEventListener("click", function () {
+            if (index === 0) index = sum - 1;
+            else index--;
+            let div = divs[index].cloneNode(true);
+            box.replaceChildren();
+            box.appendChild(div);
+            box.style.lineHeight="0";
+            document.getElementById('te').innerText=(index+1)+"/"+(sum);
+            box.setAttribute("inital","none");
+        }, true);
+        right.addEventListener("click", function () {
+            if (index >= sum - 1) index = 0;
+            else index++;
+            let div = divs[index].cloneNode(true);
+            box.replaceChildren();
+            box.appendChild(div);
+            box.style.lineHeight="0";
+            document.getElementById('te').innerText=(index+1)+"/"+(sum);
+            box.setAttribute("inital","none");
+        }, true);
+        // 标签创建逻辑 
+
+    </script>
+
+
+</body>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拖拽上传图片文件</title>
+    <style>
+      #box1 {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box1"></div>
+    <ul id="uuu"></ul>
+  </body>
+  <script>
+    var body = document.querySelector("body");
+    body.ondragover = function (ev) {
+      ev.preventDefault();
+    };
+    body.ondrop = function (ev) {
+      ev.preventDefault();
+    };
+    var box1 = document.getElementById("box1");
+    box1.ondragover = function (ev) {
+      ev.preventDefault();
+    };
+    var uuu = document.querySelector("#uuu");
+    box1.ondrop = function (ev) {
+      let files = ev.dataTransfer.files;
+      for (let i = 0; i < files.length; i++) {
+        let reader = new FileReader();
+        reader.readAsDataURL(files[i]);
+        reader.onload = function (ev) {
+          var base64img = ev.target.result;
+          let str = `<li><img src='${base64img}' /></li>`;
+          uuu.innerHTML += str;
+        };
+      }
+    };
+  </script>
+</html>
